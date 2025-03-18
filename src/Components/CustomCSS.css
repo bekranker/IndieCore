@@ -36,7 +36,40 @@
   align-items: center;
   position: relative; /* To contain the logo and other elements */
 }
+.email-success {
+  background-color: #d1fae5; /* Açık yeşil */
+  color: #065f46;
+  font-weight: bold;
+}
 
+.email-error {
+  background-color: #fecaca; /* Açık kırmızı */
+  color: #7f1d1d;
+  font-weight: bold;
+}
+
+.phone-success {
+  background-color: #d1fae5;
+  color: #065f46;
+  font-weight: bold;
+}
+
+.phone-error {
+  background-color: #fecaca;
+  color: #7f1d1d;
+  font-weight: bold;
+}
+
+.non-valid-column {
+  background-color: #fecaca; /* Açık kırmızı */
+  color: #7f1d1d; /* Koyu kırmızı yazı */
+  font-weight: bold;
+}
+
+.table-header {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+}
 #logo {
   position: absolute;
   transform: translateX(-50%);

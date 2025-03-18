@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import axios from "axios";
-import "./CustomCSS.css"; // CSS dosyanızı içe aktarın
+import "./CustomCSS.css"; // CSS dosyasını içe aktarın
 
 const XlsxVisualizer = () => {
   const [data, setData] = useState([]);
@@ -10,6 +10,7 @@ const XlsxVisualizer = () => {
   const [error, setError] = useState(""); // Hata mesajı
   const [showTable, setShowTable] = useState(false); // Tabloyu göster/gizle durumu
   const [file, setFile] = useState(null); // Yüklenen dosya bilgisi
+  const [statusMap, setStatusMap] = useState({}); // email: {emailStatus: 'success'|'error', phoneStatus: 'success'|'error'}
 
   useEffect(() => {
     // Sayfa yüklendikten sonra shake animasyonunu tetiklemek
@@ -92,6 +93,10 @@ const XlsxVisualizer = () => {
         console.error(`❌ Geçersiz telefon numarası: ${phone}`);
       }
 
+      // E-mail ve telefon doğrulama statülerini kontrol et
+      const emailStatus = email ? "success" : "error";
+      const phoneStatus = phoneRegex.test(phone) ? "success" : "error";
+
       if (email) {
         contacts.push({
           email,
@@ -101,6 +106,11 @@ const XlsxVisualizer = () => {
           },
         });
       }
+
+      setStatusMap((prevStatusMap) => ({
+        ...prevStatusMap,
+        [email]: { emailStatus, phoneStatus },
+      }));
     });
 
     for (const contact of contacts) {
@@ -174,23 +184,91 @@ const XlsxVisualizer = () => {
           <table className="min-w-full text-sm">
             <thead>
               <tr>
-                {Object.keys(data[0]).map((key) => (
-                  <th key={key} className="px-3 py-2">
-                    {key}
-                  </th>
-                ))}
+                {Object.keys(data[0]).map((key) => {
+                  const isEmailColumn = [
+                    "Email",
+                    "E-mail",
+                    "Eposta",
+                    "E-posta",
+                    "Mail",
+                    "email",
+                  ].includes(key);
+                  const isPhoneColumn = [
+                    "Telefon",
+                    "Phone",
+                    "Telefon Numaranız",
+                    "Phone Number",
+                    "phone",
+                  ].includes(key);
+
+                  let columnClass = "non-valid-column";
+                  if (isEmailColumn) columnClass = "email-column";
+                  else if (isPhoneColumn) columnClass = "phone-column";
+
+                  return (
+                    <th key={key} className={`table-header ${columnClass}`}>
+                      {key}
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
+
             <tbody>
-              {data.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                  {Object.keys(data[0]).map((key, colIndex) => (
-                    <td key={colIndex} className="px-3 py-2">
-                      {row[key]}
-                    </td>
-                  ))}
-                </tr>
-              ))}
+              {data.map((row, rowIndex) => {
+                const email =
+                  row["Email"] ||
+                  row["E-mail"] ||
+                  row["Eposta"] ||
+                  row["E-posta"] ||
+                  row["Mail"] ||
+                  row["email"] ||
+                  "";
+                const status = statusMap[email] || {};
+
+                return (
+                  <tr key={rowIndex}>
+                    {Object.keys(data[0]).map((key, colIndex) => {
+                      const cellValue = row[key];
+                      let cellClass = "";
+
+                      const isEmailColumn = [
+                        "Email",
+                        "E-mail",
+                        "Eposta",
+                        "E-posta",
+                        "Mail",
+                        "email",
+                      ].includes(key);
+                      const isPhoneColumn = [
+                        "Telefon",
+                        "Phone",
+                        "Telefon Numaranız",
+                        "Phone Number",
+                        "phone",
+                      ].includes(key);
+
+                      if (isEmailColumn && status.emailStatus) {
+                        cellClass =
+                          status.emailStatus === "success"
+                            ? "email-success"
+                            : "email-error";
+                      } else if (isPhoneColumn && status.phoneStatus) {
+                        cellClass =
+                          status.phoneStatus === "success"
+                            ? "phone-success"
+                            : "phone-error";
+                      }
+
+                      return (
+                        <td key={colIndex} className={`px-3 py-2 ${cellClass}`}>
+                          {cellValue}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
