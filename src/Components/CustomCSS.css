@@ -1,0 +1,190 @@
+/* Keyframe Animations */
+@keyframes fall {
+  0% {
+    top: -100px;
+    opacity: 0;
+  }
+  100% {
+    top: 50px;
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(5px);
+  }
+}
+
+/* Common Styles */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Öğeleri üstte hizala */
+  align-items: center;
+  position: relative; /* To contain the logo and other elements */
+}
+
+#logo {
+  position: absolute;
+  transform: translateX(-50%);
+  animation: fall 1s forwards;
+  z-index: 10; /* Logo her zaman en üstte olacak */
+}
+
+#logo img {
+  top: -600px;
+  position: relative;
+  width: 400px;
+  height: 400px;
+}
+
+/* Shake effect */
+.shake {
+  animation: shake 0.5s forwards;
+}
+
+input[type="file"],
+button {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Styling the file input and button */
+input[type="file"],
+button {
+  margin: 10px 0;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Adjust the button positioning */
+button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px; /* Butonlar için üstten boşluk */
+}
+
+button:hover {
+  background-color: #515151;
+}
+
+button:active {
+  background-color: #515151;
+}
+
+button.bg-red-500 {
+  background-color: #f44336;
+}
+
+button.bg-red-500:hover {
+  background-color: #d32f2f;
+}
+
+input[type="file"] {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Styling for the table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 250px; /* Tablonun logosu altta yer alması için */
+  z-index: 5; /* Tablo logo altına yerleşecek */
+  border: 2px solid #808080; /* Table border */
+  border-radius: 10px; /* Border radius for rounded corners */
+  overflow: hidden; /* Prevent content from spilling out */
+}
+
+/* Adding border between columns */
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border-right: 1px solid #808080; /* Right border for columns */
+}
+
+/* Removing the border on the last column */
+td:last-child,
+th:last-child {
+  border-right: none;
+}
+
+/* Adding bottom border to rows */
+tr {
+  background-color: #373737;
+  border-bottom: 1px solid #808080; /* Border between rows */
+}
+
+tr:nth-child(even) {
+  background-color: #373737;
+}
+
+/* Hover effect for table rows */
+tr:hover {
+  background-color: #1c1c1c; /* Row color on hover */
+}
+
+/* Styling for table headers */
+th {
+  background-color: #373737;
+  font-weight: bold;
+}
+
+/* Hover effect for table header */
+th:hover {
+  background-color: #1c1c1c; /* Row color on hover */
+}
+
+/* Styling for other elements */
+.other-element,
+.another-element {
+  margin-top: 20px;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Close (X) button style */
+.close-btn {
+  position: relative;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  color: #ff6666;
+  cursor: pointer;
+  padding: auto;
+  z-index: 10;
+}
+
+/* Hiding table */
+.hidden {
+  display: none;
+}
+
+.other-element p,
+.another-element button {
+  font-size: 18px;
+  background-color: #f0f0f0;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.other-element p {
+  color: #333;
+}
